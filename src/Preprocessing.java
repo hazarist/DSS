@@ -1,5 +1,3 @@
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.Reader;
 
 import weka.core.Instances;
@@ -17,12 +15,12 @@ public class Preprocessing {
 		
 		ins.setClassIndex(ins.numAttributes() - 1);
 		
-		ins = NormalizeIns(ins);
 		ins = RandomizeIns(ins);
 		Instances BinaryIns = NominalToBinary(ins);
+		Instances NormalizedBinaryIns = NormalizeIns(BinaryIns);
 		Instances DiscretizeIns = Discretize(ins);
 		
-		Instances[] insArray = {BinaryIns,DiscretizeIns};
+		Instances[] insArray = {NormalizedBinaryIns,DiscretizeIns};
 		
 		return insArray;
 	}

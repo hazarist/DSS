@@ -1,34 +1,59 @@
 import weka.classifiers.Classifier;
 import weka.classifiers.lazy.IBk;
 import weka.classifiers.trees.J48;
+import weka.core.Instances;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.functions.MultilayerPerceptron;
 import weka.classifiers.functions.SMO;
 
 public class Classifiers{
 	
-	public Classifier NaiveBayes() {
-		return new NaiveBayes();
+	//dataset must be nominal
+	public Classifier NaiveBayes(Instances ins) throws Exception {
+		Classifier cl = new NaiveBayes();
+		cl.buildClassifier(ins);
+		
+		return cl;
 	}
 	
-	public Classifier DecisionTree() {
-		return new J48();
+	//data type is not important
+	public Classifier DecisionTree(Instances ins) throws Exception{
+		Classifier cl = new J48();
+		cl.buildClassifier(ins);
+		
+		return cl;
 	}
 	
-	public Classifier KNearestNeighbour(int k) {
-		return new IBk(k);
+	//dataset must be numeric
+	public Classifier KNearestNeighbour(int k,Instances ins) throws Exception{
+		Classifier cl = new IBk(k);
+		cl.buildClassifier(ins);
+		
+		return cl;
 	}
 	
-	public Classifier KNearestNeighbour() {
-		return new IBk();
+	//dataset must be numeric
+	public Classifier KNearestNeighbour(Instances ins) throws Exception {
+		Classifier cl = new IBk();
+		cl.buildClassifier(ins);
+		
+		return cl;
 	}
 	
-	public Classifier ArtificalNeuralNetwork() {
-		return new MultilayerPerceptron();
+	//dataset must be numeric
+	public Classifier ArtificalNeuralNetwork(Instances ins) throws Exception {
+		Classifier cl = new MultilayerPerceptron();
+		cl.buildClassifier(ins);
+		
+		return cl;
 	}
 	
-	public Classifier SupportVectorMachine() {
-		return new SMO();
+	//dataset must be numeric
+	public Classifier SupportVectorMachine(Instances ins) throws Exception {
+		Classifier cl = new SMO();
+		cl.buildClassifier(ins);
+	
+		return cl;
 	}
 	
 }
