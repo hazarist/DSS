@@ -16,7 +16,7 @@ public class Controller {
 		ins = preprocessing.GetProccessedIns(dataset);
 	}
 	
-	public Classifier StartTrainAndTest() throws Exception {
+	public ClassifierObject StartTrainAndTest() throws Exception {
 		
 		Instances NormalizedNumericIns = ins[0]; // NormalizedNumericIns
 		Instances DiscretizedIns = ins[1]; // DiscretizedIns
@@ -26,42 +26,40 @@ public class Controller {
 		
 		Classifiers classifiers = new Classifiers();
 		
-		Classifier[] allClassifiers = new Classifier[5];
-		double[] pctValues = new double[5];
+		ClassifierObject[] allClassifiers = new ClassifierObject[5];
 		
-		allClassifiers[0] = classifiers.NaiveBayes(nominalTrainAndTestIns[0]);
-		pctValues[0] = Evaluater(allClassifiers[0],nominalTrainAndTestIns[0],nominalTrainAndTestIns[1]);
-		//System.out.println(new DecimalFormat("###.###").format(pct1));
+		allClassifiers[0] = new ClassifierObject(classifiers.NaiveBayes(nominalTrainAndTestIns[0]),"Naive Bayes");
+		allClassifiers[0].setScore(Evaluater(allClassifiers[0].getCl(),nominalTrainAndTestIns[0],nominalTrainAndTestIns[1]));
 		
-		 allClassifiers[1] = classifiers.DecisionTree(nominalTrainAndTestIns[0]);
-		 pctValues[1] = Evaluater(allClassifiers[1],nominalTrainAndTestIns[0],nominalTrainAndTestIns[1]);
+		 allClassifiers[1] = new ClassifierObject(classifiers.DecisionTree(nominalTrainAndTestIns[0]),"Decision Tree");
+		 allClassifiers[1].setScore(Evaluater(allClassifiers[1].getCl(),nominalTrainAndTestIns[0],nominalTrainAndTestIns[1]));
+		 
+		 allClassifiers[2] = new ClassifierObject(classifiers.KNearestNeighbour(3,numericTrainAndTestIns[0]),"K Nearest Neighbour");
+		 allClassifiers[2].setScore(Evaluater(allClassifiers[2].getCl(),numericTrainAndTestIns[0],numericTrainAndTestIns[1]));
 		
-		 allClassifiers[2] = classifiers.KNearestNeighbour(3,numericTrainAndTestIns[0]);
-		 pctValues[2] = Evaluater(allClassifiers[2],numericTrainAndTestIns[0],numericTrainAndTestIns[1]);
+		 allClassifiers[3] = new ClassifierObject(classifiers.ArtificalNeuralNetwork(numericTrainAndTestIns[0]),"Artifical Neural Network");
+		 allClassifiers[3].setScore(Evaluater(allClassifiers[3].getCl(),numericTrainAndTestIns[0],numericTrainAndTestIns[1]));
 		
-		 allClassifiers[3] = classifiers.ArtificalNeuralNetwork(numericTrainAndTestIns[0]);
-		 pctValues[3] = Evaluater(allClassifiers[3],numericTrainAndTestIns[0],numericTrainAndTestIns[1]);
-		
-		 allClassifiers[4] = classifiers.SupportVectorMachine(numericTrainAndTestIns[0]);
-		 pctValues[4] = Evaluater(allClassifiers[4],numericTrainAndTestIns[0],numericTrainAndTestIns[1]);
+		 allClassifiers[4] = new ClassifierObject(classifiers.SupportVectorMachine(numericTrainAndTestIns[0]),"Support Vector Machine");
+		 allClassifiers[4].setScore(Evaluater(allClassifiers[4].getCl(),numericTrainAndTestIns[0],numericTrainAndTestIns[1]));
 		
 		 int maxIndex = 0;
-		 for(int i = 0; i < pctValues.length-1 ; i++) {
-			 if(pctValues[i] < pctValues[i+1]) {
+		 for(int i = 0; i < allClassifiers.length -1 ; i++) {
+			 if(allClassifiers[i].getScore() < allClassifiers[i+1].getScore()) {
 				maxIndex = i+1;	
 			 }
 		 }
 		
-		 System.out.println("Bast algorithm perception: " + new DecimalFormat("###.###").format(pctValues[maxIndex]));
+		 
 		 
 		 return allClassifiers[maxIndex];
 	}
 	
-	public void StartPrediction(Classifier cl,BufferedReader dataset) throws Exception {
+	public void StartPrediction(ClassifierObject cl,BufferedReader dataset) throws Exception {
 		Instances ins = new Instances(dataset);
 		ins.setClassIndex(ins.numAttributes() - 1);
 		
-		Instances classifiedIns = Classify(cl,ins);
+		Instances classifiedIns = Classify(cl.getCl(),ins);
 		WriteLabeledInstances(classifiedIns);
 	}
 	
