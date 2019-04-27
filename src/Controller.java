@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DecimalFormat;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
@@ -45,20 +44,15 @@ public class Controller {
 		
 		 int maxIndex = 0;
 		 for(int i = 0; i < allClassifiers.length -1 ; i++) {
-			 if(allClassifiers[i].getScore() < allClassifiers[i+1].getScore()) {
+			 if(allClassifiers[maxIndex].getScore() < allClassifiers[i+1].getScore()) {
 				maxIndex = i+1;	
 			 }
 		 }
 		
-		 
-		 
 		 return allClassifiers[maxIndex];
 	}
 	
-	public void StartPrediction(ClassifierObject cl,BufferedReader dataset) throws Exception {
-		Instances ins = new Instances(dataset);
-		ins.setClassIndex(ins.numAttributes() - 1);
-		
+	public void StartPrediction(ClassifierObject cl,Instances ins) throws Exception {
 		Instances classifiedIns = Classify(cl.getCl(),ins);
 		WriteLabeledInstances(classifiedIns);
 	}

@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.text.DecimalFormat;
 
-import weka.classifiers.Classifier;
+import weka.core.Instances;
 
 public class Test {
 	public static void main(String[] args) throws Exception {
@@ -17,9 +17,11 @@ public class Test {
 		System.out.println("Best algorithm is " + cl.getName() + "\nBest algorithm perception: " + new DecimalFormat("###.###").format(cl.getScore()));
 		dataset.close();
 		
-		/*BufferedReader predictionDataset = new BufferedReader(new FileReader(predictionDatasetPath));
-		cont.StartPrediction(cl, predictionDataset);
-	
-		predictionDataset.close();*/
+		BufferedReader predictionDataset = new BufferedReader(new FileReader(predictionDatasetPath));
+		Instances ins = new Instances(predictionDataset);
+		ins.setClassIndex(ins.numAttributes() - 1);
+		cont.StartPrediction(cl, ins);
+		predictionDataset.close();
+		
 	}
 }

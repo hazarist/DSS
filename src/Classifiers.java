@@ -10,7 +10,7 @@ public class Classifiers{
 	
 	//dataset must be nominal
 	public Classifier NaiveBayes(Instances ins) throws Exception {
-		Classifier cl = new NaiveBayes();
+		NaiveBayes cl = new NaiveBayes();
 		cl.buildClassifier(ins);
 		
 		return cl;
@@ -18,7 +18,8 @@ public class Classifiers{
 	
 	//data type is not important
 	public Classifier DecisionTree(Instances ins) throws Exception{
-		Classifier cl = new J48();
+		J48 cl = new J48();
+		cl.setUnpruned(true);
 		cl.buildClassifier(ins);
 		
 		return cl;
@@ -26,7 +27,7 @@ public class Classifiers{
 	
 	//dataset must be numeric
 	public Classifier KNearestNeighbour(int k,Instances ins) throws Exception{
-		Classifier cl = new IBk(k);
+		IBk cl = new IBk(k);
 		cl.buildClassifier(ins);
 		
 		return cl;
@@ -34,7 +35,7 @@ public class Classifiers{
 	
 	//dataset must be numeric
 	public Classifier KNearestNeighbour(Instances ins) throws Exception {
-		Classifier cl = new IBk();
+		IBk cl = new IBk();
 		cl.buildClassifier(ins);
 		
 		return cl;
@@ -42,7 +43,7 @@ public class Classifiers{
 	
 	//dataset must be numeric
 	public Classifier ArtificalNeuralNetwork(Instances ins) throws Exception {
-		Classifier cl = new MultilayerPerceptron();
+		MultilayerPerceptron cl = new MultilayerPerceptron();
 		cl.buildClassifier(ins);
 		
 		return cl;
@@ -50,7 +51,7 @@ public class Classifiers{
 	
 	//dataset must be numeric
 	public Classifier SupportVectorMachine(Instances ins) throws Exception {
-		Classifier cl = new SMO();
+		SMO cl = new SMO();
 		cl.buildClassifier(ins);
 	
 		return cl;
